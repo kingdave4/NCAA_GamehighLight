@@ -47,6 +47,7 @@ terraform/
 ├── s3.tf                   # S3 bucket provisioning for video storage
 ├── container_definitions.tpl # Template for container definitions
 └── outputs.tf                # Outputs from Terraform
+```
 
 ## Prerequisites
 
