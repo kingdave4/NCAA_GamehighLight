@@ -61,13 +61,13 @@ Before you dive in, make sure you have:
 
 ## Setup & Deployment
 
-1. Clone the Repository
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/kingdave4/NCAA_GamehighLight.git
 cd NCAA_GamehighLight/src
 ```
 
-2. Add Your API Key to AWS Secrets Manager
+### 2. Add Your API Key to AWS Secrets Manager
 
     Store your RapidAPI key securely:
 
@@ -78,7 +78,7 @@ aws secretsmanager create-secret \
     --secret-string '{"api_key":"YOUR_ACTUAL_API_KEY"}' \
     --region us-east-1
 ```
-3. Create the Required IAM Role/User
+### 3. Create the Required IAM Role/User
 
 Open the AWS Management Console and navigate to IAM.
 
@@ -108,7 +108,7 @@ Update the role’s trust policy (replace placeholders):
 }
 ```
 
-4. Update the .env File
+### 4. Update the .env File
 Configure your .env with:
 - RapidAPI_KEY
 - AWS_ACCESS_KEY_ID
@@ -122,7 +122,7 @@ Secure the file:
 chmod 600 .env
 ```
 
-5. Build & Run Locally with Docker
+### 5. Build & Run Locally with Docker
 Build the Docker image:
 ``` bash
 docker build -t highlight-processor .
@@ -137,41 +137,41 @@ The container executes the pipeline: fetching highlights, processing a video, an
 - Raw video in videos/
 - Processed video in processed_videos/
 
-### Terraform & Deployment to AWS
+## Terraform & Deployment to AWS
 Provision AWS Resources with Terraform
 
-1. Navigate to the Terraform directory:
+### 1. Navigate to the Terraform directory:
 ``` bash
 cd terraform
 ```
 
-2. Initialize the Terraform workspace:
+### 2. Initialize the Terraform workspace:
 ``` bash
 terraform init
 ```
 
-3. Validate the configuration:
+### 3. Validate the configuration:
 ``` bash
 terraform validate
 ```
 
-4. Preview the execution plan:
+### 4. Preview the execution plan:
 ``` bash
 terraform plan
 ```
-5. Apply the configuration (using your variable file):
+### 5. Apply the configuration (using your variable file):
 ``` bash
 terraform apply -var-file="terraform.tfvars"
 ```
 
-### Deploy Docker Image to AWS ECR
-    1. Log in to AWS ECR:
+## Deploy Docker Image to AWS ECR
+### 1. Log in to AWS ECR:
 
 ``` bash
 aws ecr get-login-password --region us-east-1 | \
   docker login --username AWS --password-stdin <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com
 ```
-    2. Build, tag, and push the Docker image:
+### 2. Build, tag, and push the Docker image:
 
 ``` bash
 docker build -t highlight-pipeline:latest .
@@ -179,20 +179,20 @@ docker tag highlight-pipeline:latest <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws
 docker push <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/highlight-pipeline:latest
 ```
 
-### Verification & What We Learned
+## Verification & What We Learned
 After deployment, confirm that:
 
 - The highlights JSON file is in your S3 bucket.
 - The raw and processed videos are stored correctly.
 - AWS MediaConvert jobs run successfully.
 
-#### Key takeaways from Project #5:
+### Key takeaways from Project #5:
 - Leveraging containerization (Docker) to ensure consistency.
 - Integrating multiple AWS services (S3, MediaConvert, ECS) for a robust media pipeline.
 - Automating infrastructure setup using Terraform.
 - Emphasizing secure configuration management via environment variables and Secrets Manager.
 
-### Future Enhancements
+## Future Enhancements
 - Expand Terraform scripts to provision additional AWS resources.
 - Increase the number of videos processed concurrently.
 - Transition from static date queries to dynamic time ranges (e.g., last 30 days).
