@@ -69,7 +69,7 @@ cd NCAA_GamehighLight/src
 
 2. Add Your API Key to AWS Secrets Manager
 
-Store your RapidAPI key securely:
+    Store your RapidAPI key securely:
 
 ```bash
 aws secretsmanager create-secret \
