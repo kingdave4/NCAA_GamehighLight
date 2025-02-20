@@ -139,28 +139,27 @@ The container executes the pipeline: fetching highlights, processing a video, an
 
 ### Terraform & Deployment to AWS
 Provision AWS Resources with Terraform
-    1. Navigate to the Terraform directory:
+
+1. Navigate to the Terraform directory:
 ``` bash
 cd terraform
 ```
-    2. Initialize the Terraform workspace:
 
+2. Initialize the Terraform workspace:
 ``` bash
 terraform init
 ```
 
-    3. Validate the configuration:
+3. Validate the configuration:
 ``` bash
 terraform validate
 ```
 
-    4. Preview the execution plan:
-
+4. Preview the execution plan:
 ``` bash
 terraform plan
 ```
-    5. Apply the configuration (using your variable file):
-
+5. Apply the configuration (using your variable file):
 ``` bash
 terraform apply -var-file="terraform.tfvars"
 ```
