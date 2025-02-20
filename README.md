@@ -24,6 +24,10 @@ This project demonstrates how to:
 
 ---
 
+### Technical Diagram
+
+![Snap](https://github.com/user-attachments/assets/f3c4f55e-cea1-4147-96cc-2473e9e09636)
+
 ### File Structure
 
 ```bash
@@ -57,10 +61,6 @@ Before you dive in, make sure you have:
 - AWS CLI: Ensure AWS CLI is installed and configured (aws --version)
 - Python 3: Check your Python version with python3 --version
 - AWS Account Details: Your AWS Account ID and valid IAM access keys.
-
-### Technical Diagram
-
-![Snap](https://github.com/user-attachments/assets/f3c4f55e-cea1-4147-96cc-2473e9e09636)
 
 ### Setup & Deployment
 
