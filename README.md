@@ -115,8 +115,8 @@ Configure your .env with:
 - S3_BUCKET_NAME
 - MEDIACONVERT_ENDPOINT (retrieve with aws mediaconvert describe-endpoints)
 - MEDIACONVERT_ROLE_ARN (e.g., arn:aws:iam::your_account_id:role/HighlightProcessorRole)
-- Secure the file:
 
+Secure the file:
 ``` bash
 chmod 600 .env
 ```
