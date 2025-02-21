@@ -62,6 +62,59 @@ Before you dive in, make sure you have:
 - Python 3: Check your Python version with python3 --version
 - AWS Account Details: Your AWS Account ID and valid IAM access keys.
 
+Environment Configuration
+### 1. Create the .env File for Local Runs
+In the root of your project (or within the src directory), create a file named .env and paste the following content. Update the placeholder values with your actual credentials and configuration details. This file will be used when running the project locally.
+
+``` env
+# .env
+
+API_URL=https://sport-highlights-api.p.rapidapi.com/basketball/highlights
+RAPIDAPI_HOST=sport-highlights-api.p.rapidapi.com
+RAPIDAPI_KEY=your_rapidapi_key_here
+AWS_ACCESS_KEY_ID=your_aws_access_key_id_here
+AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key_here
+AWS_DEFAULT_REGION=us-east-1
+S3_BUCKET_NAME=your_S3_bucket_name_here
+AWS_REGION=us-east-1
+DATE=2023-12-01
+LEAGUE_NAME=NCAA
+LIMIT=5
+MEDIACONVERT_ENDPOINT=https://your_mediaconvert_endpoint_here.amazonaws.com
+MEDIACONVERT_ROLE_ARN=arn:aws:iam::your_account_id:role/YourMediaConvertRole
+INPUT_KEY=highlights/basketball_highlights.json
+OUTPUT_KEY=videos/first_video.mp4
+RETRY_COUNT=3
+RETRY_DELAY=30
+WAIT_TIME_BETWEEN_SCRIPTS=60
+```
+
+### 2. Create the terraform.tfvars File for Deploying Terraform Code
+
+Within the terraform directory, create a file named terraform.tfvars and paste the following content. You can update the values as needed. This file will be used to deploy your Terraform code and provision the AWS resources for the project. You have the option to enter your own project name by updating the project_name variable. Additionally, if you wish to use a custom MediaConvert role, provide its ARN in the mediaconvert_role_arn variable. For example, you might expect a value like: arn:aws:iam::123456789012:role/YourCustomMediaConvertRole. If left blank, the default role that is created during provisioning will be used.
+
+``` tf
+# terraform.tfvars
+
+aws_region                = "us-east-1" # your preferred region here
+project_name              = "your_project_name_here"  # Enter your own project name here
+s3_bucket_name            = "your_S3_bucket_name_here"
+ecr_repository_name       = "your_ecr_repository_name_here"
+
+rapidapi_ssm_parameter_arn = "arn:aws:ssm:us-east-1:xxxxxxxxxxxx:parameter/myproject/rapidapi_key"
+
+mediaconvert_endpoint     = "https://your_mediaconvert_endpoint_here.amazonaws.com"
+mediaconvert_role_arn     = "" 
+# Optionally, specify your custom MediaConvert role ARN here. For example:
+# mediaconvert_role_arn = "arn:aws:iam::123456789012:role/YourCustomMediaConvertRole"
+# Leaving this string empty will use the role that is automatically created by the Terraform scripts.
+
+retry_count               = 5
+retry_delay               = 60
+```
+Make sure to replace placeholder values with your actual configuration details.
+
+
 ### Setup & Deployment
 
 ### 1. Clone the Repository
@@ -79,46 +132,9 @@ aws secretsmanager create-secret \
     --secret-string '{"api_key":"YOUR_ACTUAL_API_KEY"}' \
     --region us-east-1
 ```
-### 3. Create the Required IAM Role/User
 
-Open the AWS Management Console and navigate to IAM.
-
-Create a role named HighlightProcessorRole with the following permissions:
-- AmazonS3FullAccess
-- MediaConvertFullAccess
-- AmazonEC2ContainerRegistryFullAccess
-Update the role’s trust policy (replace placeholders):
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": [
-          "ec2.amazonaws.com",
-          "ecs-tasks.amazonaws.com",
-          "mediaconvert.amazonaws.com"
-        ],
-        "AWS": "arn:aws:iam::<your-account-id>:user/<your-iam-user>"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-```
-
-### 4. Update the .env File
-Configure your .env with:
-- RapidAPI_KEY
-- AWS_ACCESS_KEY_ID
-- AWS_SECRET_ACCESS_KEY
-- S3_BUCKET_NAME
-- MEDIACONVERT_ENDPOINT (retrieve with aws mediaconvert describe-endpoints)
-- MEDIACONVERT_ROLE_ARN (e.g., arn:aws:iam::your_account_id:role/HighlightProcessorRole)
-
-Secure the file:
+### 3. Update the .env File
+Ensure that your .env file (created earlier) contains all necessary configuration values and is secured:
 ``` bash
 chmod 600 .env
 ```
@@ -179,6 +195,27 @@ docker build -t highlight-pipeline:latest .
 docker tag highlight-pipeline:latest <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/highlight-pipeline:latest
 docker push <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/highlight-pipeline:latest
 ```
+
+## Challenges I Overcame
+
+This Challlenge was annoying but it felt very satifying after completing it and finding the issue.
+
+1️⃣ ECS Task Restart Loop: The ECS service was repeatedly starting and stopping tasks, leading to a continuous loop. This issue was traced back to application or configuration errors causing the tasks to stop unexpectedly.
+
+2️⃣ IAM PassRole Permission for MediaConvert: The ECS tasks were unable to create processed highlight videos due to insufficient permissions, specifically lacking the iam:PassRole permission required for AWS Elemental MediaConvert. I addressed this by setting up the necessary IAM roles and policies, granting the ECS tasks the appropriate permissions to interact with MediaConvert. 
+
+
+*** Troubleshooting ***
+ECS Task Failures:
+
+- Check the stopped reason and exit code for tasks in the ECS console to identify underlying issues.
+- Did some research and with the help of chatgpt i found the reason to why it kept failing.
+
+MediaConvert Permission Errors:
+- Verify that the IAM roles associated with ECS tasks include the necessary permissions, such as iam:PassRole, to allow interaction with MediaConvert.
+- Review the IAM policies to ensure they grant access to the required AWS resources and services.
+
+By systematically addressing these challenges and refining the IAM configurations, the project now operates smoothly, with ECS tasks running as expected and MediaConvert processing videos without permission issues.
 
 ## Verification & What We Learned
 After deployment, confirm that:
