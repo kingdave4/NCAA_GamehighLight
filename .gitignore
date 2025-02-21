@@ -21,6 +21,7 @@
 
 ../terraform/*.tfvars
 /terraform/*.tfvars
+terraform/terraform.tfvars
 # ----------------------------
 # Optional: Ignore Other Files
 # ----------------------------
