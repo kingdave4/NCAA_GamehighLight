@@ -19,6 +19,8 @@
 .terraform/
 .terraform.lock.hcl
 
+../terraform/.*.tfvars
+/terraform/.*.tfvars
 # ----------------------------
 # Optional: Ignore Other Files
 # ----------------------------
