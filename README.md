@@ -43,13 +43,14 @@ src/
 └── .gitignore                # Files to exclude from Git
 terraform/
 ├── main.tf                   # Main Terraform configuration file
-├── variables.tf              # Variables used in the Terraform configuration
+├── variables.tf              # Variables
 ├── secrets.tf                # AWS Secrets Manager and sensitive data provisioning
 ├── iam.tf                    # IAM roles and policies
 ├── ecr.tf                    # ECR repository configuration
 ├── ecs.tf                    # ECS cluster and service configuration
 ├── s3.tf                   # S3 bucket provisioning for video storage
 ├── container_definitions.tpl # Template for container definitions
+├── terraform.tfvars          # Variables used in the Terraform configuration
 └── outputs.tf                # Outputs from Terraform
 ```
 
@@ -229,6 +230,3 @@ By systematically addressing these challenges and refining the IAM configuration
 - Increase the number of videos processed concurrently.
 - Transition from static date queries to dynamic time ranges (e.g., last 30 days).
 - Improve logging and error handling for enhanced observability.
-
-Happy coding, and enjoy exploring the powerful combination of containerization, AWS, and Terraform with Project #5: NCAA Game Highlights!
-
