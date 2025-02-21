@@ -139,7 +139,7 @@ Ensure that your .env file (created earlier) contains all necessary configuratio
 chmod 600 .env
 ```
 
-### 5. Build & Run Locally with Docker
+## Build & Run Locally with Docker
 Build the Docker image:
 ``` bash
 docker build -t highlight-processor .
@@ -217,20 +217,13 @@ MediaConvert Permission Errors:
 
 By systematically addressing these challenges and refining the IAM configurations, the project now operates smoothly, with ECS tasks running as expected and MediaConvert processing videos without permission issues.
 
-## Verification & What We Learned
-After deployment, confirm that:
-
-- The highlights JSON file is in your S3 bucket.
-- The raw and processed videos are stored correctly.
-- AWS MediaConvert jobs run successfully.
-
 ### Key takeaways from Project #5:
 - Leveraging containerization (Docker) to ensure consistency.
 - Integrating multiple AWS services (S3, MediaConvert, ECS) for a robust media pipeline.
 - Automating infrastructure setup using Terraform.
 - Emphasizing secure configuration management via environment variables and Secrets Manager.
 
-## Future Enhancements
+### Future Enhancements
 - Expand Terraform scripts to provision additional AWS resources.
 - Increase the number of videos processed concurrently.
 - Transition from static date queries to dynamic time ranges (e.g., last 30 days).
