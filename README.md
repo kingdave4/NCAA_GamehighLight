@@ -205,7 +205,8 @@ This Challlenge was annoying but it felt very satifying after completing it and 
 2️⃣ IAM PassRole Permission for MediaConvert: The ECS tasks were unable to create processed highlight videos due to insufficient permissions, specifically lacking the iam:PassRole permission required for AWS Elemental MediaConvert. I addressed this by setting up the necessary IAM roles and policies, granting the ECS tasks the appropriate permissions to interact with MediaConvert. 
 
 
-*** Troubleshooting ***
+**Troubleshooting**
+
 ECS Task Failures:
 
 - Check the stopped reason and exit code for tasks in the ECS console to identify underlying issues.
