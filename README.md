@@ -147,7 +147,7 @@ docker build -t highlight-processor .
 ```
 Run the container:
 ``` bash
-docker run --env-file .env highlight-processor
+docker run -d --env-file .env highlight-processor
 ```
 
 The container executes the pipeline: fetching highlights, processing a video, and submitting a MediaConvert job. Verify the output files in your S3 bucket:
@@ -195,6 +195,11 @@ aws ecr get-login-password --region us-east-1 | \
 docker build -t highlight-pipeline:latest .
 docker tag highlight-pipeline:latest <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/highlight-pipeline:latest
 docker push <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/highlight-pipeline:latest
+```
+
+### Clean up and destroy all the AWS resources that was created.
+``` bash
+terraform destroy -auto-approve
 ```
 
 ## Challenges I Overcame
